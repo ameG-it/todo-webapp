@@ -22,15 +22,15 @@ jobs:
       - name: Log in to registry
         uses: docker/login-action@v2
         with:
-          registry: https://${{secret.ContainerRegistory_ServerName}}/
-          username: ${{secret.ContainerRegistory_UserName}}
-          password: ${{secret.ContainerRegistory_Password}}
+          registry: https://${{secrets.ContainerRegistory_ServerName}}/
+          username: ${{secrets.ContainerRegistory_UserName}}
+          password: ${{secrets.ContainerRegistory_Password}}
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{secret.ContainerRegistory_ServerName}}/${{secret.ContainerRegistory_UserName}}/todo/webapp:${{ github.sha }}
+          tags: ${{secrets.ContainerRegistory_ServerName}}/${{secrets.ContainerRegistory_UserName}}/todo/webapp:${{ github.sha }}
           context: ./app
           file: ./app/Dockerfile
 
@@ -48,5 +48,5 @@ jobs:
         with:
           app-name: "todo-dev-webapp"
           slot-name: "production"
-          publish-profile: ${{ ${{secret.AzureAppService_PublishProfile}} }}
-          images: "${{secret.ContainerRegistory_ServerName}}/${{secret.ContainerRegistory_UserName}}/todo/webapp:${{ github.sha }}"
+          publish-profile: ${{ ${{secrets.AzureAppService_PublishProfile}} }}
+          images: "${{secrets.ContainerRegistory_ServerName}}/${{secrets.ContainerRegistory_UserName}}/todo/webapp:${{ github.sha }}"
